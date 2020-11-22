@@ -77,7 +77,7 @@ namespace LatinPrimer
                     }
                 }
             }
-            for (int i = 2; i < 10; i++)
+            for (int i = 2; i < 6; i++)
             {
                 foreach (var ans in Answers)
                 {
@@ -88,15 +88,87 @@ namespace LatinPrimer
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("----- r, q -------------");
+
+
+            //------------------------------------------------------
+            Console.WriteLine("\n------ 2n == 2p + a + 3 ----------");
+            foreach (var p in Answers)
+            {
+                if (p.Roman.Length == 6)
+                {
+                    foreach (int a in new int[] { 11, 101 })
+                    {
+                        int N = 2 * p.Value + a + 3;
+                        if (N % 2 == 0 && IsPrime(N / 2) && Romanise(N / 2).Length == 6)
+                            Console.WriteLine($"II * {Romanise(N / 2)} = II * {p.Roman} + {Romanise(a)} + III");
+                    }
+                }
+            }
+            int A = 101;
+            int B = 11;
+
+            Console.WriteLine("\n----- q + 15 == 4r -------------");
             foreach (var r in Answers)
             {
-                if (r.Roman.Length == 7)
+                if (r.Roman.Length == 7 && r.Value * 4 - 15 < 2000)
                 {
                     int q = 4 * r.Value - 15;
                     if (IsPrime(q) && Romanise(q).Length == 7)
-                        Console.WriteLine($"{Romanise(q)} + 15 = 4 * {r.Roman}");
+                        if (Romanise(q)[1] == 'C' || r.Roman[1] == 'C')
+                            Console.WriteLine($"{Romanise(q)} + XV = IV * {r.Roman}");
                 }
+            }
+            int Q = 318;
+            int R = 83;
+
+            Console.WriteLine("\n-------- s + b == t + a ----------");
+            foreach (var t in Answers)
+            {
+                if (t.Roman.Length == 9 && t.Value * 5 < 2000)
+                {
+                    int s = t.Value + A - B;
+                    if (IsPrime(s) && Romanise(s).Length == 9)
+                        Console.WriteLine($"{Romanise(s)} + {Romanise(B)} = {t.Roman} + {Romanise(A)}");
+
+                }
+            }
+            int S = 373;
+            int T = 283;
+
+            Console.WriteLine("\n-------- m + 4 == s + 2a ---");
+            int M = S + 2 * A - 4;
+            Console.WriteLine($"{Romanise(M)} + IV = {Romanise(S)} + II * {Romanise(A)}");
+
+            Console.WriteLine("\n-------- d = 5t + c + n ---");
+            foreach (int n in new int[] { 89, 179, 359 })
+            {
+                foreach (int c in new int[] { 3, 7, 19, 41, 69, 61, 109, 151 })
+                {
+                    int d = 5 * T + c + n;
+                    if (IsPrime(d) && Romanise(d).Length == 4)
+                        Console.WriteLine($"{Romanise(d)} = V * {Romanise(T)} + {Romanise(c)} + {Romanise(n)}");
+                }
+            }
+            int C = 7;
+
+            Console.WriteLine("\n-------- e + f + g + h + k + 7 = s + m ---");
+            foreach (var e in Answers)
+            {
+                if (e.Roman.Length == 4)
+                    foreach (var f in Answers)
+                        if (f.Roman.Length == 4 && f.Value > e.Value)
+                            foreach (var g in Answers)
+                                if (g.Roman.Length == 4 && g.Value > f.Value)
+                                    foreach (var h in Answers)
+                                        if (h.Roman.Length == 4 && h.Value > g.Value)
+                                            foreach (var k in Answers)
+                                                if (k.Roman.Length == 4 && k.Value > h.Value)
+                                                {
+                                                    int sum = e.Value + f.Value + g.Value + h.Value + k.Value + 7;
+                                                    if (e.Roman[1] == 'C' || f.Roman[1] == 'C' || g.Roman[1] == 'C' || h.Roman[1] == 'C' || k.Roman[1] == 'C')
+                                                        if (sum == S + M)
+                                                            Console.WriteLine($"{e.Roman} {f.Roman} {g.Roman} {h.Roman} {k.Roman}");
+                                                }
             }
         }
         //------------------------------------------------------
