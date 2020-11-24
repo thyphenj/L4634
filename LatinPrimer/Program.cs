@@ -19,19 +19,9 @@ namespace LatinPrimer
                 }
             }
 
-            //for (int i = 2; i < 10; i++)
-            //{
-            //    Console.WriteLine($"=================={i}===============");
-            //    foreach (var n in numbers.Where(a => a.Length == i).OrderBy(b => b.Roman))
-            //    {
-            //        Console.WriteLine(n.Format());
-            //    }
-            //}
-
-
             //------------------------------------------------------------------
             Console.WriteLine("\n------ 2n == 2p + a + 3 ----------");
-            List<Number[]> poss_np = new List<Number[]>();
+            List<Number[]> poss_npa = new List<Number[]>();
             foreach (var p in numbers.Where(a => a.Length == 6))
             {
                 foreach (var n in numbers.Where(a => a.Length == 6))
@@ -42,13 +32,18 @@ namespace LatinPrimer
                         if (aaa == a.Integer)
                         {
                             Console.WriteLine($"npa - {n} {p} {a}");
-                            poss_np.Add(new Number[] { n, p });  // a = CI
+                            poss_npa.Add(new Number[] { n, p, a });  // a = CI
                         }
 
                     }
                 }
             }
-            Number A = new Number(101);
+            Number A;
+            {
+                Console.WriteLine(poss_npa.Count);
+                A = new Number(poss_npa[0][2].Integer);
+                Console.WriteLine($"-----A = {A.Format()}");
+            }
 
             //------------------------------------------------------------------
             Console.WriteLine("\n-------- s + b == t + a ----------");
@@ -72,11 +67,15 @@ namespace LatinPrimer
                 }
             }
             Number S, B, T;
-            if (poss_sbt.Count == 1)
+            //if (poss_sbt.Count == 1)
             {
+                Console.WriteLine(poss_sbt.Count);
                 S = new Number(poss_sbt[0][0].Integer);
-                B = new Number(poss_sbt[0][1].Integer);
                 T = new Number(poss_sbt[0][2].Integer);
+                B = new Number(poss_sbt[0][1].Integer);
+                Console.WriteLine($"-----S = {S.Format()}");
+                Console.WriteLine($"-----T = {T.Format()}");
+                Console.WriteLine($"-----B = {B.Format()}");
             }
 
 
@@ -94,100 +93,89 @@ namespace LatinPrimer
                             Console.WriteLine($"qr - {q} {r}");
                             poss_qr.Add(new Number[] { q, r });
                         }
-                        else
-                            Console.WriteLine($"     {q} {r} xxxxxxxxxxxxxx");
                     }
                 }
             }
+            Number Q, R;
+            //if (poss_qr.Count == 1)
+            {
+                Console.WriteLine(poss_qr.Count);
+                Q = new Number(poss_qr[0][0].Integer);
+                R = new Number(poss_qr[0][1].Integer);
+                Console.WriteLine($"-----Q = {Q.Format()}");
+                Console.WriteLine($"-----R = {R.Format()}");
+            }
+
+            //------------------------------------------------------------------
+            Console.WriteLine("\n-------- m + 4 == s + 2a ---");
+            List<Number> poss_m = new List<Number>();
+            foreach (var m in numbers.Where(z => z.Length == 5))
+            {
+                if (m.Integer + 4 == S.Integer + 2 * A.Integer)
+                {
+                    Console.WriteLine($"m - {m}");
+                    poss_m.Add(new Number(m.Integer));
+                }
+            }
+            Number M;
+            // if ()
+            {
+                Console.WriteLine(poss_m.Count);
+                M = new Number(poss_m[0].Integer);
+                Console.WriteLine($"-----M = {M.Format()}");
+            }
+
+            //------------------------------------------------------------------
+            Console.WriteLine("\n-------- d = 5t + c + n ---");
+            List<Number[]> poss_dcn = new List<Number[]>();
+            foreach (var d in numbers.Where(z => z.Length == 4 && z.Integer > 5 * T.Integer))
+            {
+                foreach (var np in poss_npa)
+                {
+                    foreach (var n in np.Where(z => z.Length == 6))
+                    {
+                        foreach (var c in numbers.Where(z => z.Length == 3))
+                        {
+                            if (d.Integer == 5 * T.Integer + c.Integer + n.Integer)
+                            {
+                                Console.WriteLine($"dcn - {d} {c} {n}");
+                                poss_dcn.Add(new Number[] { d, c, n });
+                            }
+                        }
+                    }
+                }
+            }
+            {
+                Console.WriteLine(poss_dcn.Count);
+            }
+
+            //------------------------------------------------------------------
+            Console.WriteLine("\n-------- e + f + g + h + k + 7 = s + m ---");
+            List<Number[]> poss_efghk = new List<Number[]>();
+            foreach (var e in numbers.Where(z => z.Length == 4))
+            {
+                foreach (var f in numbers.Where(z => z.Length == 4 && z.Integer > e.Integer))
+                {
+                    foreach (var g in numbers.Where(z => z.Length == 4 && z.Integer > f.Integer))
+                    {
+                        foreach (var h in numbers.Where(z => z.Length == 4 && z.Integer > g.Integer))
+                        {
+                            foreach (var k in numbers.Where(z => z.Length == 4 && z.Integer > h.Integer))
+                            {
+                                //        if (e.Roman[1] == 'C' || f.Roman[1] == 'C' || g.Roman[1] == 'C' || h.Roman[1] == 'C' || k.Roman[1] == 'C')
+                                if (e.Sum(f.Sum(g.Sum(h.Sum(k.Sum(7))))) == S.Sum(M))
+                                {
+                                    Console.WriteLine($"efghk - {e} {f} {g} {h} {k}");
+                                    poss_efghk.Add(new Number[] { e, f, g, h, k });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            {
+                Console.WriteLine(poss_efghk.Count);
+            }
         }
-        //    {
-        //        if (r.Roman.Length == 7 && r.Value * 4 - 15 < 2000)
-        //        {
-        //            int q = 4 * r.Value - 15;
-        //            if (IsPrime(q) && Rule.Romanise(q).Length == 7)
-        //                if (Rule.Romanise(q)[1] == 'C' || r.Roman[1] == 'C')
-        //                    Console.WriteLine($"{Rule.Romanise(q)} + XV = IV * {r.Roman}");
-        //        }
-        //    }
-        //    int Q = 318;
-        //    int R = 83;
-
-        //    Console.WriteLine("\n-------- s + b == t + a ----------");
-        //    foreach (var t in Prime.RomanPrimes)
-        //    {
-        //        if (t.Roman.Length == 9 && t.Value * 5 < 2000)
-        //        {
-        //            int s = t.Value + A - B;
-        //            if (IsPrime(s) && Rule.Romanise(s).Length == 9)
-        //                Console.WriteLine($"{Rule.Romanise(s)} + {Rule.Romanise(B)} = {t.Roman} + {Rule.Romanise(A)}");
-
-        //        }
-        //    }
-        //    int S = 373;
-        //    int T = 283;
-
-        //    Console.WriteLine("\n-------- m + 4 == s + 2a ---");
-        //    int M = S + 2 * A - 4;
-        //    Console.WriteLine($"{Rule.Romanise(M)} + IV = {Rule.Romanise(S)} + II * {Rule.Romanise(A)}");
-
-        //    Console.WriteLine("\n-------- d = 5t + c + n ---");
-        //    foreach (int n in new int[] { 89, 179, 359 })
-        //    {
-        //        foreach (int c in new int[] { 3, 7, 19, 41, 69, 61, 109, 151 })
-        //        {
-        //            int d = 5 * T + c + n;
-        //            if (IsPrime(d) && Rule.Romanise(d).Length == 4)
-        //                Console.WriteLine($"{Rule.Romanise(d)} = V * {Rule.Romanise(T)} + {Rule.Romanise(c)} + {Rule.Romanise(n)}");
-        //        }
-        //    }
-        //    int C = 7;
-
-        //    Console.WriteLine("\n-------- e + f + g + h + k + 7 = s + m ---");
-        //    foreach (var e in Prime.RomanPrimes)
-        //    {
-        //        if (e.Roman.Length == 4)
-        //            foreach (var f in Prime.RomanPrimes)
-        //                if (f.Roman.Length == 4 && f.Value > e.Value)
-        //                    foreach (var g in Prime.RomanPrimes)
-        //                        if (g.Roman.Length == 4 && g.Value > f.Value)
-        //                            foreach (var h in Prime.RomanPrimes)
-        //                                if (h.Roman.Length == 4 && h.Value > g.Value)
-        //                                    foreach (var k in Prime.RomanPrimes)
-        //                                        if (k.Roman.Length == 4 && k.Value > h.Value)
-        //                                        {
-        //                                            int sum = e.Value + f.Value + g.Value + h.Value + k.Value + 7;
-        //                                            if (e.Roman[1] == 'C' || f.Roman[1] == 'C' || g.Roman[1] == 'C' || h.Roman[1] == 'C' || k.Roman[1] == 'C')
-        //                                                if (sum == S + M)
-        //                                                    Console.WriteLine($"{e.Roman} {f.Roman} {g.Roman} {h.Roman} {k.Roman}");
-        //                                        }
-        //    }
-        //}
-        //private static bool IsPrime(int a)
-        //{
-        //    foreach (int p in Prime.Primes)
-        //    {
-        //        if (p == a)
-        //            return true;
-        //    }
-        //    return false;
-        //}
-
-        //private void Init()
-        //{
-        //    foreach (int prime in Prime.Primes)
-        //    {
-        //        string romanised = Rule.Romanise(prime);
-        //        int romanLength = romanised.Length;
-        //        if (romanLength > 1 && romanLength < 10)
-        //        {
-        //            var answer = new Answer(prime, romanised);
-        //            if (romanLength >= 4 || !answer.Contains('M') && !answer.Contains('D'))
-        //            {
-        //                //    RomanPrimes.Add(answer);
-        //            }
-        //        }
-        //    }
-
     }
-
 }

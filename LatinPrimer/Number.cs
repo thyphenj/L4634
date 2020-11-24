@@ -42,5 +42,13 @@ namespace LatinPrimer
         {
             return $"{Integer,4} - {Roman}";
         }
+        public int Sum(Number a)
+        {
+            return (this.Integer + a.Integer);
+        }
+        public int Sum(int a)
+        {
+            return (this.Integer + a);
+        }
     }
 }
