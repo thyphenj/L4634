@@ -15,6 +15,9 @@ namespace LatinPrimer
                 var n = new Number(p);
                 if (n.Length > 1 && n.Length < 10)
                 {
+
+                    if (n.Length == 3)
+                        Console.WriteLine(n);
                     numbers.Add(n);
                 }
             }
